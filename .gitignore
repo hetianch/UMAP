@@ -1,0 +1,9 @@
+*.avi
+*.mov
+*.png
+*.jpg
+*.zip
+algorithms/.idea
+algorithms/.Rapp.history
+algorithms/.ropeproject
+

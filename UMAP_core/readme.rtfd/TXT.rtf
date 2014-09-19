@@ -1,0 +1,121 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Menlo-Regular;\f2\fmodern\fcharset0 CourierNewPSMT;
+\f3\fmodern\fcharset0 Courier;}
+{\colortbl;\red255\green255\blue255;\red28\green0\blue207;}
+\margl1440\margr1440\vieww15080\viewh8360\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\fs24 \cf0 Work flow of analyzing fly behavior by JAABA\
+[1]create jaaba input from .csv:\
+1. open .csv by excel, sort by flyID, open new .csv by matlab\
+2. order by flyID\
+3. import flyID, blobColor, as cell array, and all the rest numeric value as matrix (flymatrix)\
+columns in flymatrix are\
+\pard\tx529\pardeftab529\pardirnatural
+
+\f1\fs22 \cf0 \CocoaLigature0 %\cf2 1\cf0 frame\
+%\cf2 2\cf0 nFlies\
+%\cf2 3\cf0 flyFrame\
+%\cf2 4\cf0 blobX\
+%\cf2 5\cf0 blobY\
+%\cf2 6\cf0 blobArea\
+%\cf2 7\cf0 blobAngle\
+%\cf2 8\cf0 blobA\
+%\cf2 9\cf0 blobB\
+I didn\'92t include the rest this time:\
+%\cf2 10\cf0 deltaX\
+%\cf2 11\cf0 deltaY\
+%\cf2 12\cf0 flySpeed\
+%\cf2 13\cf0 flyArea\
+%\cf2 14\cf0 flyAspect\
+%\cf2 15\cf0 areaDeviance\
+%\cf2 16\cf0 framesDeviance
+\f0\fs24 \CocoaLigature1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 4. 
+\f1\fs22 \CocoaLigature0 create_JAABA_trajectory(flyID,flymatrix,blobColor ) # return registered_trx.mat (trx, timestamps) to current directory.  \
+\
+\
+Don\'92t forget that, after this step, you need to run frame_diagnosis( goodtrx ) to examine if the frame for all flies are correct. (should be consecutive frames)
+\f0\fs24 \CocoaLigature1 \
+\
+[2] use JAABA 0.5.2 from matlab command line. export scores. view classifier, label, window features information through: \
+	
+\f2 >> proj = load('allenBeh.jab','-mat')
+\f0 \
+\pard\pardeftab720
+
+\f2 \cf0 proj =\'a0
+\f0 \
+
+\f2 \'a0 \'a0 x: [1x1 struct]
+\f0 \
+
+\f2 >> proj.x
+\f0 \
+
+\f2 ans =\'a0
+\f0 \
+
+\f2 \'a0 \'a0 \'a0 featureLexiconName: 'mice'
+\f0 \
+
+\f2 \'a0 \'a0 \'a0 \'a0 \'a0 featureLexicon: [1x1 struct]
+\f0 \
+
+\f2 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0behaviors: [1x1 struct]
+\f0 \
+
+\f2 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 file: [1x1 struct]
+\f0 \
+
+\f2 \'a0 \'a0 \'a0 \'a0 trxGraphicParams: [1x1 struct]
+\f0 \
+
+\f2 \'a0 \'a0 \'a0 labelGraphicParams: [1x1 struct]
+\f0 \
+
+\f2 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0scoreFeatures: [0x0 struct]
+\f0 \
+
+\f2 \'a0 \'a0 \'a0 \'a0sublexiconPFNames: \{55x1 cell\}
+\f0 \
+
+\f2 \'a0 \'a0 windowFeaturesParams: [1x1 struct]
+\f0 \
+
+\f2 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 labels: [1x1 struct]
+\f0 \
+
+\f2 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 gtLabels: [0x0 struct]
+\f0 \
+
+\f2 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0expDirNames: \{'/groups/flyprojects/home/leea30/flybowl/minhyung20140102/New/test20140115/Exp20140115T151955'\}
+\f0 \
+
+\f2 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0gtExpDirNames: \{\}
+\f0 \
+
+\f2 \'a0 \'a0 \'a0 \'a0 \'a0classifierStuff: [1x1 ClassifierStuff]
+\f0 \
+
+\f2 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0extra: [1x1 struct]
+\f0 \
+
+\f2 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0version: \{\{1x1 cell\}\}\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0 \cf0 [3] find diagnosis candidate (compare Brad\'92s prediction with JAABA\'92s), calculate agreement, export disagreement frames to spreadsheet.\
+1. load allScores, and goodtrx\
+2. 
+\f3\fs20 JAABA_postprocessing(goodtrx,allScores )
+\fs24 \
+
+\f0 3. convert_xls.py\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 \
+\
+}

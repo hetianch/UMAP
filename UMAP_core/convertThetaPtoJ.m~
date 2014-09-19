@@ -1,0 +1,60 @@
+function [thetaPtoJpi] = convertThetaPtoJ(goodtrx)
+%this function is used to transform our theata to jabba theta based on
+%two criteria: delta X,deltaY, and one fly cannot swith orientation by 180
+%degree
+% thetaPtoJpi is a m by n cell array with m for single fly n for a single frame  (fly by frame matrix)
+ 
+
+DtoP=pi/180;
+thetaPtoJ={};
+thetaPtoJpi={};
+nfly=size(goodtrx,2);
+
+for j=1:nfly
+       
+        COL=size(goodtrx(j).blobAngle);
+
+        for i=1:COL-1
+            if (90<=goodtrx(j).blobAngle(i)) && (goodtrx(j).blobAngle(i)<=180)
+
+                 if goodtrx(j).blobdeltaY(i)<0
+                     thetaPtoJ{j}(i)=goodtrx(j).blobAngle(i);
+                 elseif goodtrx(j).blobdeltaY(i)>0
+                     thetaPtoJ{j}(i)=goodtrx(j).blobAngle(i)-180;
+                 else
+                     thetaPtoJ{j}(i)=NaN;
+                 end
+ 
+            else %(180<goodtrx(j).blobdeltaY(i)) && (goodtrx(j).blobdeltaY(i)<270);
+                 if goodtrx(j).blobdeltaY(i)<0
+                     thetaPtoJ{j}(i)=goodtrx(j).blobAngle(i)-180;
+                 elseif  goodtrx(j).blobdeltaY(i)>0
+                    thetaPtoJ{j}(i)=goodtrx(j).blobAngle(i)-360;
+                 else
+                    thetaPtoJ{j}(i)=NaN;
+                 end
+
+            end
+        end
+        
+        thetaPtoJ{j}=[thetaPtoJ{j},NaN];
+        
+       % for i=1:COL-1
+       %     if  abs(thetaPtoJ{j}(i+1)-thetaPtoJ{j}(i))>=90
+       %         thetaPtoJ{j}(i+1)=thetaPtoJ{j}(i);
+       %     end
+       % end
+       
+       diffPtoJ{j}=diff(thetaPtoJ{j});
+       [COLdiff]=find(abs(diffPtoJ{j})>=170);
+    
+       for i= 1:length(COLdiff)
+          
+           thetaPtoJ{j}(COLdiff(i))= thetaPtoJ{j}(COLdiff(i))+180;
+       end   
+        
+        thetaPtoJpi{j} = thetaPtoJ{j} .* DtoP;
+        
+end
+
+

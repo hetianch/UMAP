@@ -1,0 +1,49 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fmodern\fcharset0 Courier;\f2\fnil\fcharset134 STHeitiSC-Light;
+}
+{\colortbl;\red255\green255\blue255;\red110\green5\blue0;}
+\margl1440\margr1440\vieww9740\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\fs24 \cf0 This package is used to compute window features for perframe features. You can either compute window features for labeled flies or for all flies. \
+\
+1. customize feature_config file. \
+	window_offset, window_radius, change_window_radii, and per frame features and corresponding transformation type.\
+\
+2. read this file in matlab / * future, don\'92t load it manually, but rather read automatically*/\
+	params=ReadXMLParams(\'91feature_config.xml\'92)\
+3. go to per-frame feature file, run compute_window_features\
+   
+\fs26  
+\f1 compute_window_features(labels,params,trx)
+\fs24 \
+
+\f0 \
+\
+\
+\cf2 debugging: \cf0 \
+darea, da, ect , d-features\'92s dimension < area,a.  So don\'92t label the last frame!\
+check you labels: \
+misdim_idx=[];\
+frame_to_delete=[];\
+for i = 1:size(window_target,2)\
+    if ~isempty(find (window_target(i).labels(end,1)==trx(window_target(i).fly).endframe))==1\
+    misdim_idx_temp=window_target(i).fly;\
+    misdim_idx=[misdim_idx,misdim_idx_temp];\
+    frame_to_delete_temp=trx(window_target(i).fly).endframe;\
+    frame_to_delete=[frame_to_delete,frame_to_delete_temp];\
+   \
+    end\
+end\
+\
+fly: 5,9,97\
+location: 5,7,16\
+frame
+\f2 \'a3\'ba1797\'a3\'ac5156\'a3\'ac17678\
+\
+\
+
+\f0 \
+\
+\
+}
