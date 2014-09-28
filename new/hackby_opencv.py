@@ -16,4 +16,4 @@ cap.get(cv2.CAP_PROP_FRAME_COUNT)
 print cap.get(3), cap.get(4), cap.get(cv2.CAP_PROP_FRAME_COUNT)
 
 cap.release()
-cv2.destroyAllWindows()
+cv2.destroyAllWindows() 
