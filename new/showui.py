@@ -28,6 +28,7 @@ class jaabaGUI(QMainWindow):
         #video player
         self.mediaPlayer1 = QMediaPlayer(None, QMediaPlayer.VideoSurface)
         self.mediaPlayer2 = QMediaPlayer(None, QMediaPlayer.VideoSurface)
+        self.mediaPlayer2.setNotifyInterval(100)
         #self.mediaPlayer.metaDataChanged.connect(self.metaDataChanged)
         self.mediaPlayer1.durationChanged.connect(self.durationChanged)
         self.mediaPlayer1.positionChanged.connect(self.positionChanged)
@@ -147,8 +148,8 @@ class jaabaGUI(QMainWindow):
 	        # print type(position),position
 	        # print type(self.frame_trans),self.frame_trans 
 	        # print position/self.frame_trans
-	     	self.ui.lineEdit.setText(str(int(round(position/self.frame_trans,0))))
-	     	self.flyCanvas.getFrame(int(round(position/self.frame_trans,0)))
+	     	self.ui.lineEdit.setText(str(int(round(position/self.frame_trans))))
+	     	self.flyCanvas.getFrame(int(round(position/self.frame_trans)))
 	     	self.flyCanvas.isManualCalled = True;
 	     	self.flyCanvas.update()
 
