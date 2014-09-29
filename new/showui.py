@@ -7,10 +7,10 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QGraphicsItem, QGraphics
 from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer
 from PyQt5.QtMultimediaWidgets import QGraphicsVideoItem
 import numpy as numpy
-import cv2
 from TargetView import TargetView
 from ui import Ui_MainWindow
 from Video import Video
+import cv2
 class jaabaGUI(QMainWindow):
     """ controller for the blob labeling GUI"""
     def __init__(self,parent=None):
@@ -46,11 +46,7 @@ class jaabaGUI(QMainWindow):
         self.mediaPlayer1.setVideoOutput(self.videoItem1)
         self.mediaPlayer2.setVideoOutput(self.videoItem2)
 
-        #mouse event 
-
-        
-
-
+  
         #slider bar
         self.ui.horizontalSlider.setRange(0, 0)
         self.ui.horizontalSlider.sliderMoved.connect(self.setPosition)
@@ -60,22 +56,7 @@ class jaabaGUI(QMainWindow):
         self.flyCanvas= TargetView()
         self.scene.addItem(self.flyCanvas)
 
-        
-   
 
-
-        #print self.ui.graphicsView.width()/2,self.ui.graphicsView.height()
-        #self.videoItem1.setSize(QSizeF(self.ui.graphicsView.width()/2,self.ui.graphicsView.height()))
-        #self.videoItem2.setSize(QSizeF(self.ui.graphicsView.width()*10,self.ui.graphicsView.height()*10))
-       # self.videoItem2.setSize(graphicsView.size())
-        #self.videoItem2.setOffset(QPointF(500,500))
-        #self.videoItem2.setOffset(QPointF(self.ui.graphicsView.width()/2,0))   
-        #self.videoItem2.setPos(QPointF(0,0))
-        # print self.ui.graphicsView.width(), self.ui.graphicsView.height()
-        # print self.ui.graphicsView.size()
-        # print self.videoItem2.boundingRect().width(), self.videoItem2.boundingRect().height()
-        # print self.ui.graphicsView.sceneRect()
-        #self.mediaPlayer.stateChanged.connect(self.mediaStateChanged)
 
         #callbacks
         self.ui.actionQuit.triggered.connect(self.quit)
@@ -93,9 +74,7 @@ class jaabaGUI(QMainWindow):
         self.height=None
         self.frame_trans=None
 
-
-
-        
+     
     # ###actions starts from here###
     def quit(self):
         QApplication.quit()
@@ -112,6 +91,7 @@ class jaabaGUI(QMainWindow):
 	    	self.frame_count=cap.get(cv2.CAP_PROP_FRAME_COUNT)
 	    	self.width=cap.get(3)
 	    	self.height=cap.get(4)
+
 	        self.mediaPlayer2.setMedia(QMediaContent(QUrl.fromLocalFile(self.videoFilename )))
 	        self.mediaPlayer1.setMedia(QMediaContent(QUrl.fromLocalFile(self.videoFilename )))
 	        self.ui.buttonPlay.setEnabled(True)
@@ -134,15 +114,10 @@ class jaabaGUI(QMainWindow):
         self.videoItem1.setPos(QPointF(0,0))
         self.videoItem2.setPos(QPointF(self.ui.graphicsView.width()/2,0))
         self.flyCanvas.setPos(QPointF(self.ui.graphicsView.width()/2,0))
-        #self.ui.graphicsView.setGeometry(0,0, 600,800)
-        #print 'graphicsView size', self.ui.graphicsView.size()
-        #print 'graphicsScene size', self.scene.sceneRect()
-        #self.videoItem2.setSize(QSizeF(1000,300))
-        #print 'graphicsVideoItem size',self.videoItem2.size()
-        # print 'item x',self.videoItem2.scenePos().x()
-        # print 'item y', self.videoItem2.scenePos().y()
-        # print 'item x',self.videoItem1.scenePos().x()
-        # print 'item y', self.videoItem1.scenePos().y()
+
+        self.videoItem2.setXYScale(self.width,self.height,self.ui.graphicsView.width()/2,self.ui.graphicsView.height())
+        self.flyCanvas.setXYScale(self.width,self.height,self.ui.graphicsView.width()/2,self.ui.graphicsView.height())
+
 
         if self.mediaPlayer1.state() == QMediaPlayer.PlayingState:
         	self.ui.buttonPlay.setIcon(self.ui.style().standardIcon(PyQt5.QtWidgets.QStyle.SP_MediaPlay))
@@ -159,29 +134,11 @@ class jaabaGUI(QMainWindow):
             self.mediaPlayer2.pause()
         else: 
             self.mediaPlayer2.play()
-
-
-
-
-        
-        #size= self.videoItem2.nativeSize()
-        # print self.mediaPlayer.duration()
-      
-        #print self.mediaPlayer.metaData()
-      
-
-        # print self.ui.graphicsView.width(), self.ui.graphicsView.height()
-        # print self.ui.graphicsView.size()
-        # print self.videoItem2.boundingRect().width(), self.videoItem2.boundingRect().height()
-        # print self.ui.graphicsView.sceneRect()
-        # print self.scene.sceneRect()
-        # print self.ui.graphicsView.sizeHint()
-
-    
+  
 
     def setPosition(self, position):
     	self.mediaPlayer1.setPosition(position) 
-    	self.mediaPlayer2.setPosition(position)  
+    	self.mediaPlayer2.setPosition(position) 
 
     # when position of media changed, set slider and text box accordingly.
     def positionChanged(self, position):
@@ -191,7 +148,10 @@ class jaabaGUI(QMainWindow):
 	        # print type(self.frame_trans),self.frame_trans 
 	        # print position/self.frame_trans
 	     	self.ui.lineEdit.setText(str(int(round(position/self.frame_trans,0))))
-	       
+	     	self.flyCanvas.getFrame(int(round(position/self.frame_trans,0)))
+	     	self.flyCanvas.isManualCalled = True;
+	     	self.flyCanvas.update()
+
         self.writeLog(str(position))    
     
     def durationChanged(self, duration):
@@ -207,6 +167,7 @@ class jaabaGUI(QMainWindow):
 
     def writeLog(self,text):
         self.ui.log.setText(text)
+
 
 
 
