@@ -146,7 +146,7 @@ else
     drawnow;
     start_time=tic;
     [flyID, blobColor ,flymatrix]=load_trajectory(path);
-    [goodtrx, trx] = create_JAABA_trajectory(flyID,flymatrix,blobColor,center_x,center_y,arena_diameter,frames_second,pixels_mm)
+    [goodtrx, trx] = create_JAABA_trajectory(flyID,flymatrix,blobColor,center_x,center_y,arena_diameter,frames_second,pixels_mm);
     clear flyID flymatrix;
 
      if frame_diagnosis==0

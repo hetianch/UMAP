@@ -18,8 +18,8 @@ from sklearn.externals import joblib
 
 
 # import data and labels using python array handling package np
-path='/Users/071cht/Desktop/chase/test0/ori/'
-data = np.loadtxt(path+'cv.txt',delimiter= ',')
+path='/Users/071cht/Desktop/Lab/publications/train/sex/'
+data = np.loadtxt(path+'cv_scale.txt',delimiter= ',')
 labels = np.loadtxt(path+'labels.txt')
 behavior_value=1 #labels=1 is having behavior, labels=0 is not having behavior
 behavior_col=behavior_value
@@ -114,8 +114,8 @@ pl.axvline(n_components_pca_mle,linestyle=':', label='n_components chosen')"""
 #X=X_whole[0:Y.shape[0],]
 
 cvfold=3
-kfold = cross_validation.KFold(len(X), n_folds=cvfold)
-#kfold = cross_validation.StratifiedKFold(Y, n_folds=cvfold)
+#kfold = cross_validation.KFold(len(X), n_folds=cvfold)
+kfold = cross_validation.StratifiedKFold(Y, n_folds=cvfold)
 print X.shape, Y.shape
 
 #set up params
@@ -131,7 +131,7 @@ params=dict([('boost', boost_params),('logit',logit_params),('svm_linear',svm_li
 boost= GradientBoostingClassifier(**params['boost'])
 logit= linear_model.LogisticRegression(**params['logit'])
 svm_linear=SVC(**params['svm_linear'])
-svm_gaussian=SVC(**params['svm_gaussian'])
+svm_gaussian=SVCparam(**s['svm_gaussian'])
 knn= neighbors.KNeighborsClassifier(**params['knn'])
 
 algorithms=dict([('boosting',boost),('logistic regression',logit),('svm with linear kernel',svm_linear),('svm with gaussian kernel',svm_gaussian),('k-nearest neighbors',knn)])
